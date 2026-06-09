@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Edumate
 
-## Getting Started
+Smart study planner app — Sprint 2 authentication (registration & login).
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+edumate-web/
+├── frontend/          # Next.js + React + Tailwind (port 3000)
+│   ├── app/           # Pages (login, register, dashboard)
+│   └── src/           # API, actions, schemas, types
+├── backend/           # Express + MongoDB + JWT (port 5000)
+│   └── src/           # Models, controllers, routes
+└── package.json       # Root scripts to run both apps
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js 20+
+- MongoDB running locally or a remote `MONGODB_URI`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup
 
-## Learn More
+### 1. Install dependencies
 
-To learn more about Next.js, take a look at the following resources:
+From the repository root:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run install:all
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Or install each app separately:
 
-## Deploy on Vercel
+```bash
+npm install --prefix frontend
+npm install --prefix backend
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2. Environment variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Backend** — copy and edit `backend/.env.example`:
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+```env
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/edumate
+JWT_SECRET=your_super_secret_jwt_key_change_in_production
+CLIENT_URL=http://localhost:3000
+```
+
+**Frontend** — copy and edit `frontend/.env.local.example`:
+
+```bash
+cp frontend/.env.local.example frontend/.env.local
+```
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+## Running the Apps
+
+From the repository root:
+
+```bash
+# Frontend only (http://localhost:3000)
+npm run dev:frontend
+
+# Backend only (http://localhost:5000)
+npm run dev:backend
+```
+
+Run both in separate terminals for the full auth flow.
+
+## Auth Flow
+
+1. **Register** — `http://localhost:3000/register`
+2. **Login** — `http://localhost:3000/login`
+3. **Dashboard** — `http://localhost:3000/dashboard` (requires `edumate_session` cookie)
+
+## API Endpoints
+
+| Method | Endpoint              | Description        |
+|--------|-----------------------|--------------------|
+| POST   | `/api/auth/register`  | Create new account |
+| POST   | `/api/auth/login`     | Login, returns JWT |
+| GET    | `/api/health`         | Health check       |
