@@ -23,6 +23,14 @@ export interface UserResponse {
   updatedAt: Date;
 }
 
+export interface UpdateUserProfileDTO {
+  name?: string;
+  email?: string;
+  avatar?: string;
+  currentPassword?: string;
+  newPassword?: string;
+}
+
 /**
  * Payload accepted by the registration endpoint.
  */
@@ -65,6 +73,16 @@ export interface LoginSuccessResponse {
  * Successful registration response with created user details.
  */
 export interface RegisterSuccessResponse {
+  success: true;
+  user: UserResponse;
+}
+
+export interface WhoamiSuccessResponse {
+  success: true;
+  user: UserResponse;
+}
+
+export interface UpdateSuccessResponse {
   success: true;
   user: UserResponse;
 }
