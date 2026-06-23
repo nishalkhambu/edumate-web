@@ -1,12 +1,19 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../controllers/auth.controller";
+import {
+  loginUser,
+  registerUser,
+  whoamiUser,
+  updateUser,
+  upload,
+} from "../controllers/auth.controller";
+import { authorized } from "../middleware/auth.middleware";
 
 const authRouter = Router();
 
-/**
- * Authentication routes for user registration and login.
- */
 authRouter.post("/register", registerUser);
 authRouter.post("/login", loginUser);
+
+authRouter.get("/whoami", authorized, whoamiUser);
+authRouter.put("/update", authorized, upload.single("avatar"), updateUser);
 
 export default authRouter;
