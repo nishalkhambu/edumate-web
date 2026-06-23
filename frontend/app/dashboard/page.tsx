@@ -46,7 +46,7 @@ export default function DashboardPage() {
 
       <section className="dashboard-content">
         <div className="dashboard-card">
-          <h2>Welcome to Edumate</h2>
+          <h2>Welcome to EduMate</h2>
           <p>
             You are successfully authenticated. This dashboard is a placeholder
             for upcoming study planning features.

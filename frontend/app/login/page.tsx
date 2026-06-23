@@ -72,6 +72,7 @@ export default function LoginPage() {
                   placeholder="Enter your email"
                   aria-invalid={errors.email ? "true" : "false"}
                   {...register("email")}
+                  suppressHydrationWarning
                 />
                 {errors.email && (
                   <p className="field-error">{errors.email.message}</p>
@@ -86,13 +87,14 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   aria-invalid={errors.password ? "true" : "false"}
                   {...register("password")}
+                  suppressHydrationWarning
                 />
                 {errors.password && (
                   <p className="field-error">{errors.password.message}</p>
                 )}
               </div>
 
-              <button type="submit" disabled={isSubmitting}>
+              <button type="submit" disabled={isSubmitting} suppressHydrationWarning>
                 {isSubmitting ? "Signing in..." : "Login"}
               </button>
             </form>

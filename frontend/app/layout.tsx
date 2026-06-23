@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { AuthProvider } from "@/src/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Edumate ",
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning {...devBodyAttrs}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

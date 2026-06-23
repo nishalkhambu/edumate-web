@@ -1,7 +1,3 @@
-/**
- * Shared authentication types used across API and action layers.
- */
-
 export interface RegisterPayload {
   name: string;
   email: string;
@@ -36,6 +32,22 @@ export interface LoginSuccessResponse {
   success: true;
   token: string;
   user: AuthUser;
+}
+
+export interface WhoamiSuccessResponse {
+  success: true;
+  user: AuthUser & {
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface UpdateSuccessResponse {
+  success: true;
+  user: AuthUser & {
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export type AuthActionResult<T> =

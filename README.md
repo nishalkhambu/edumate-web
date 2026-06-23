@@ -46,7 +46,7 @@ cp backend/.env.example backend/.env
 
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/edumate
+MONGODB_URI=mongodb://127.0.0.1:27017/edumate
 JWT_SECRET=your_super_secret_jwt_key_change_in_production
 CLIENT_URL=http://localhost:3000
 ```
