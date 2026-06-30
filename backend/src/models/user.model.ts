@@ -1,10 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { IUser } from "../types/user.types";
+import { IUser, UserRole, UserStatus } from "../types/user.types";
 
-/**
- * Mongoose schema for application users.
- * Password is excluded from default queries via `select: false`.
- */
 const userSchema = new Schema<IUser>(
   {
     name: {
@@ -26,6 +22,18 @@ const userSchema = new Schema<IUser>(
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters"],
       select: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+      required: true,
     },
   },
   {

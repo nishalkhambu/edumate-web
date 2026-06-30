@@ -25,6 +25,18 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  const isAdminProtected = pathname.startsWith("/dashboard/admin");
+
+  if (isAdminProtected) {
+    const token = req.cookies.get(SESSION_COOKIE_NAME)?.value;
+
+    if (!token) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 

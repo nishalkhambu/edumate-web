@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
 import { ApiErrorResponse } from "../types/user.types";
+import { UserRole } from "../types/user.types";
 
 export interface AuthRequest extends Request {
   user?: {
     _id: string;
     email: string;
     name: string;
+    role: UserRole;
   };
 }
 
@@ -23,6 +25,14 @@ const unauthorizedResponse = (res: Response): void => {
     message: "Unauthorized - Invalid or missing token",
   };
   res.status(401).json(errorResponse);
+};
+
+const forbiddenResponse = (res: Response): void => {
+  const errorResponse: ApiErrorResponse = {
+    success: false,
+    message: "Forbidden - Admin access required",
+  };
+  res.status(403).json(errorResponse);
 };
 
 export const authorized = async (
@@ -53,6 +63,7 @@ export const authorized = async (
       _id: user._id.toString(),
       email: user.email,
       name: user.name,
+      role: user.role,
     };
 
     next();
@@ -60,4 +71,17 @@ export const authorized = async (
     console.error("authorized middleware error:", error);
     unauthorizedResponse(res);
   }
+};
+
+export const adminOnly = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  if (!req.user || req.user.role !== "admin") {
+    forbiddenResponse(res);
+    return;
+  }
+
+  next();
 };

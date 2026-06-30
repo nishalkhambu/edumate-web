@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import { connectDB } from "./config/db";
 import authRouter from "./routes/auth.routes";
+import adminRouter from "./routes/admin.routes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,7 @@ app.get("/api/health", (_req, res) => {
 
 // ✅ Auth routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/admin", adminRouter);
 
 // ✅ Start server
 const startServer = async (): Promise<void> => {

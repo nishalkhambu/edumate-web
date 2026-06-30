@@ -15,6 +15,8 @@ import {
   RegisterSuccessResponse,
   WhoamiSuccessResponse,
   UpdateSuccessResponse,
+  UserRole,
+  UserStatus,
 } from "../types/user.types";
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
@@ -65,12 +67,16 @@ const toUserResponse = (user: {
   _id: { toString(): string };
   name: string;
   email: string;
+  role: UserRole;
+  status: UserStatus;
   createdAt: Date;
   updatedAt: Date;
 }): UserResponse => ({
   id: user._id.toString(),
   name: user.name,
   email: user.email,
+  role: user.role,
+  status: user.status,
   createdAt: user.createdAt,
   updatedAt: user.updatedAt,
 });
@@ -151,7 +157,15 @@ export const registerUser = async (
 
     const response: RegisterSuccessResponse = {
       success: true,
-      user: toUserResponse(user),
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role || "user",
+        status: user.status || "active",
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
 
     res.status(201).json(response);
@@ -207,6 +221,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         id: user._id.toString(),
         name: user.name,
         email: user.email,
+        role: user.role || "user",
+        status: user.status || "active",
       },
     };
 
@@ -238,7 +254,15 @@ export const whoamiUser = async (req: Request, res: Response): Promise<void> => 
 
     const response: WhoamiSuccessResponse = {
       success: true,
-      user: toUserResponse(user),
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role || "user",
+        status: user.status || "active",
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
 
     res.status(200).json(response);
@@ -311,7 +335,15 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 
     const response: UpdateSuccessResponse = {
       success: true,
-      user: toUserResponse(user),
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role || "user",
+        status: user.status || "active",
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
 
     res.status(200).json(response);

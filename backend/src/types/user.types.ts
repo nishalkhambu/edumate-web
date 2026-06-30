@@ -1,24 +1,25 @@
 import { Document, Types } from "mongoose";
 
-/**
- * Core User document shape stored in MongoDB.
- */
+export type UserRole = "user" | "admin";
+export type UserStatus = "active" | "inactive";
+
 export interface IUser extends Document {
   _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
+  role: UserRole;
+  status: UserStatus;
   createdAt: Date;
   updatedAt: Date;
 }
 
-/**
- * Public user representation returned to clients (password excluded).
- */
 export interface UserResponse {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
+  status: UserStatus;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,34 +32,22 @@ export interface UpdateUserProfileDTO {
   newPassword?: string;
 }
 
-/**
- * Payload accepted by the registration endpoint.
- */
 export interface RegisterUserDTO {
   name: string;
   email: string;
   password: string;
 }
 
-/**
- * Payload accepted by the login endpoint.
- */
 export interface LoginUserDTO {
   email: string;
   password: string;
 }
 
-/**
- * Standardized API error response shape.
- */
 export interface ApiErrorResponse {
   success: false;
   message: string;
 }
 
-/**
- * Successful login response including JWT and sanitized user details.
- */
 export interface LoginSuccessResponse {
   success: true;
   token: string;
@@ -66,12 +55,11 @@ export interface LoginSuccessResponse {
     id: string;
     name: string;
     email: string;
+    role: UserRole;
+    status: UserStatus;
   };
 }
 
-/**
- * Successful registration response with created user details.
- */
 export interface RegisterSuccessResponse {
   success: true;
   user: UserResponse;
@@ -85,4 +73,41 @@ export interface WhoamiSuccessResponse {
 export interface UpdateSuccessResponse {
   success: true;
   user: UserResponse;
+}
+
+export interface AdminUserListResponse {
+  success: true;
+  data: UserResponse[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+export interface AdminUserResponse {
+  success: true;
+  user: UserResponse;
+}
+
+export interface CreateUserDTO {
+  name: string;
+  email: string;
+  password: string;
+  role?: UserRole;
+  status?: UserStatus;
+}
+
+export interface UpdateUserDTO {
+  name?: string;
+  email?: string;
+  role?: UserRole;
+  status?: UserStatus;
+  password?: string;
+}
+
+export interface AdminForbiddenResponse {
+  success: false;
+  message: string;
 }
