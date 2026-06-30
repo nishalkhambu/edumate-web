@@ -58,3 +58,5 @@ export interface UpdateSuccessResponse {
 export type AuthActionResult<T> =
   | { success: true; data: T }
   | { success: false; message: string };
+
+  
