@@ -52,6 +52,32 @@ function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function AccessDenied() {
+  const router = useRouter();
+  return (
+    <main className="dashboard-container">
+      <header className="dashboard-header">
+        <h1>Admin Panel</h1>
+        <div className="header-actions">
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard")}
+            className="admin-cancel-btn"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </header>
+      <section className="dashboard-content">
+        <div className="admin-panel-card">
+          <h2>Access Denied</h2>
+          <p>You do not have admin privileges.</p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function UserForm({
   editingUser,
   onSubmit,
@@ -84,96 +110,103 @@ function UserForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <>
       <h2>{editingUser ? "Edit User" : "Create User"}</h2>
       {message && (
         <div className={`alert ${message.type === "success" ? "alert-success" : "alert-error"}`}>
           {message.text}
         </div>
       )}
-      <div className="input-group">
-        <label htmlFor="name">Full Name</label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Enter full name"
-          {...register("name")}
-          suppressHydrationWarning
-        />
-        {errors.name && <p className="field-error">{errors.name.message}</p>}
-      </div>
-
-      <div className="input-group">
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter email"
-          {...register("email")}
-          suppressHydrationWarning
-        />
-        {errors.email && <p className="field-error">{errors.email.message}</p>}
-      </div>
-
-      {!editingUser && (
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="input-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="name">Full Name</label>
           <input
-            id="password"
-            type="password"
-            placeholder="Enter password"
-            {...register("password")}
+            id="name"
+            type="text"
+            placeholder="Enter full name"
+            {...register("name")}
             suppressHydrationWarning
           />
-          {errors.password && <p className="field-error">{errors.password.message}</p>}
+          {errors.name && <p className="field-error">{errors.name.message}</p>}
         </div>
-      )}
 
-      {editingUser && (
         <div className="input-group">
-          <label htmlFor="password">New Password (optional)</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="password"
-            type="password"
-            placeholder="Leave blank to keep current"
-            {...register("password")}
+            id="email"
+            type="email"
+            placeholder="Enter email"
+            {...register("email")}
             suppressHydrationWarning
           />
-          {errors.password && <p className="field-error">{errors.password.message}</p>}
+          {errors.email && <p className="field-error">{errors.email.message}</p>}
         </div>
-      )}
 
-      <div className="input-group">
-        <label htmlFor="role">Role</label>
-        <select id="role" {...register("role")} suppressHydrationWarning>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-      </div>
+        {!editingUser && (
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              {...register("password")}
+              suppressHydrationWarning
+            />
+            {errors.password && <p className="field-error">{errors.password.message}</p>}
+          </div>
+        )}
 
-      <div className="input-group">
-        <label htmlFor="status">Status</label>
-        <select id="status" {...register("status")} suppressHydrationWarning>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-      </div>
+        {editingUser && (
+          <div className="input-group">
+            <label htmlFor="password">New Password (optional)</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Leave blank to keep current"
+              {...register("password")}
+              suppressHydrationWarning
+            />
+            {errors.password && <p className="field-error">{errors.password.message}</p>}
+          </div>
+        )}
 
-      <div className="admin-modal-actions">
-        <button type="button" onClick={handleClose} className="admin-cancel-btn">
-          Cancel
-        </button>
-        <button type="submit" disabled={isSubmitting} className="admin-submit-btn">
-          {isSubmitting ? "Saving..." : editingUser ? "Update User" : "Create User"}
-        </button>
-      </div>
-    </form>
+        <div className="input-group">
+          <label htmlFor="role">Role</label>
+          <select id="role" {...register("role")} suppressHydrationWarning>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="status">Status</label>
+          <select id="status" {...register("status")} suppressHydrationWarning>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div className="admin-modal-actions">
+          <button type="button" onClick={handleClose} className="admin-cancel-btn">
+            Cancel
+          </button>
+          <button type="submit" disabled={isSubmitting} className="admin-submit-btn">
+            {isSubmitting ? "Saving..." : editingUser ? "Update User" : "Create User"}
+          </button>
+        </div>
+      </form>
+    </>
   );
 }
 
 export default function AdminUsersPage() {
   const { user } = useAuth();
   const router = useRouter();
+
+  if (!user || user.role !== "admin") {
+    return <AccessDenied />;
+  }
+
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [meta, setMeta] = useState({ page: 1, limit: 10, total: 0, totalPages: 0 });
   const [search, setSearch] = useState("");
