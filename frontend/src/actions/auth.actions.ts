@@ -50,6 +50,8 @@ export async function registerAction(
         id: response.user.id,
         name: response.user.name,
         email: response.user.email,
+        role: response.user.role,
+        status: response.user.status,
       },
     };
   } catch (error) {
@@ -71,7 +73,13 @@ export async function loginAction(
 
     return {
       success: true,
-      data: response.user,
+      data: {
+        id: response.user.id,
+        name: response.user.name,
+        email: response.user.email,
+        role: response.user.role,
+        status: response.user.status,
+      },
     };
   } catch (error) {
     return {
@@ -91,6 +99,8 @@ export async function whoamiAction(): Promise<AuthActionResult<AuthUser>> {
         id: response.user.id,
         name: response.user.name,
         email: response.user.email,
+        role: response.user.role,
+        status: response.user.status,
       },
     };
   } catch (error) {
@@ -113,6 +123,8 @@ export async function updateProfileAction(
         id: response.user.id,
         name: response.user.name,
         email: response.user.email,
+        role: response.user.role,
+        status: response.user.status,
       },
     };
   } catch (error) {
