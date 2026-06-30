@@ -9,10 +9,15 @@ export interface LoginPayload {
   password: string;
 }
 
+export type UserRole = "user" | "admin";
+export type UserStatus = "active" | "inactive";
+
 export interface AuthUser {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
+  status: UserStatus;
 }
 
 export interface ApiErrorResponse {
