@@ -6,10 +6,13 @@ import {
   clearSessionToken,
   getSessionToken,
 } from "@/src/actions/auth.actions";
+import { useAuth } from "@/src/contexts/AuthContext";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const { user, isLoading } = useAuth();
 
   useEffect(() => {
     const token = getSessionToken();
@@ -27,7 +30,7 @@ export default function DashboardPage() {
     router.push("/login");
   };
 
-  if (!isAuthorized) {
+  if (!isAuthorized || (!user && !isLoading)) {
     return (
       <div className="dashboard-loading">
         <p>Loading your dashboard...</p>
@@ -39,9 +42,29 @@ export default function DashboardPage() {
     <main className="dashboard-container">
       <header className="dashboard-header">
         <h1>EduMate Dashboard</h1>
-        <button type="button" onClick={handleLogout} className="logout-btn">
-          Logout
-        </button>
+        <div className="header-actions">
+          <Link href="/dashboard" className="nav-link active">
+            Dashboard
+          </Link>
+          <Link href="/dashboard/profile" className="nav-link">
+            Profile
+          </Link>
+          <Link href="/dashboard/password" className="nav-link">
+            Password
+          </Link>
+          {user?.role === "admin" && (
+            <Link href="/dashboard/admin/users" className="nav-link">
+              Users
+            </Link>
+          )}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="logout-btn"
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       <section className="dashboard-content">
