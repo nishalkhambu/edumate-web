@@ -2,17 +2,17 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { whoamiAction } from "@/src/actions/auth.actions";
+import { AuthUser, UserRole, UserStatus } from "@/src/types/auth.types";
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
+  status: UserStatus;
 }
 
-
-
 export interface AuthContextType {
-
   user: User | null;
   setUser: (user: User | null) => void;
   isLoading: boolean;
@@ -29,7 +29,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const result = await whoamiAction();
         if (result.success && "data" in result) {
-          setUser(result.data);
+          const authUser = result.data as AuthUser;
+          setUser({
+            id: authUser.id,
+            name: authUser.name,
+            email: authUser.email,
+            role: authUser.role,
+            status: authUser.status,
+          });
         } else {
           setUser(null);
         }
