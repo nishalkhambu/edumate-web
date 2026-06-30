@@ -72,6 +72,8 @@ export default function ProfilePage() {
           id: result.data.id,
           name: result.data.name,
           email: result.data.email,
+          role: result.data.role,
+          status: result.data.status,
         };
         setUser(authUser);
         setValue("name", authUser.name);
@@ -116,6 +118,8 @@ export default function ProfilePage() {
         id: result.data.id,
         name: result.data.name,
         email: result.data.email,
+        role: result.data.role,
+        status: result.data.status,
       });
     }
 
