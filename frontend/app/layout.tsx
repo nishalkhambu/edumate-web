@@ -1,6 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { AuthProvider } from "@/src/contexts/AuthContext";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Edumate ",
@@ -16,7 +24,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body suppressHydrationWarning {...devBodyAttrs}>
+      <body suppressHydrationWarning {...devBodyAttrs} className={inter.className}>
         <AuthProvider>
           {children}
         </AuthProvider>
