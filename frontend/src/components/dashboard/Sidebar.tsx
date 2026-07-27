@@ -2,29 +2,38 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, CheckSquare, StickyNote, TrendingUp, Target, GraduationCap, Settings, ChevronLeft, LogOut } from "lucide-react";
+import { Home, Calendar, CheckSquare, StickyNote, TrendingUp, Target, GraduationCap, Settings, ChevronLeft, LogOut, Play } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { clearSessionToken } from "@/src/actions/auth.actions";
 import { useRouter } from "next/navigation";
+
+import { Shield } from "lucide-react";
 
 const nav = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Timetable", href: "/dashboard/timetable", icon: Calendar },
   { name: "Tasks", href: "/dashboard/tasks", icon: CheckSquare },
+  { name: "Study Sessions", href: "/dashboard/study-sessions", icon: Play },
   { name: "Notes", href: "/dashboard/notes", icon: StickyNote },
   { name: "Progress", href: "/dashboard/progress", icon: TrendingUp },
   { name: "Exam Planner", href: "/dashboard/exam-planner", icon: Target },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
+const adminNav = { name: "Admin", href: "/dashboard/admin", icon: Shield };
+
 export function Sidebar({
   name,
   collapsed,
   onToggle,
+  isAdmin,
+  role,
 }: {
   name: string;
   collapsed: boolean;
   onToggle: () => void;
+  isAdmin?: boolean;
+  role?: string;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -70,6 +79,30 @@ export function Sidebar({
             </Link>
           );
         })}
+        {isAdmin && (() => {
+          const active = isActive(adminNav.href);
+          const Icon = adminNav.icon;
+          return (
+            <Link
+              key={adminNav.name}
+              href={adminNav.href}
+              title={collapsed ? adminNav.name : undefined}
+              className={cn(
+                "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                collapsed && "justify-center",
+                active
+                  ? "bg-rose-500/15 text-rose-200"
+                  : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
+              )}
+            >
+              {active && (
+                <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-rose-400" />
+              )}
+              <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-rose-300" : "text-slate-500 group-hover:text-slate-300")} />
+              {!collapsed && <span className="truncate">{adminNav.name}</span>}
+            </Link>
+          );
+        })()}
       </nav>
 
       <div className="border-t border-slate-800/70 p-3">
@@ -80,7 +113,7 @@ export function Sidebar({
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-slate-100">{name}</p>
-              <p className="text-xs text-slate-400">Student</p>
+              <p className="text-xs text-slate-400 capitalize">{role || "Student"}</p>
             </div>
           </div>
         )}
