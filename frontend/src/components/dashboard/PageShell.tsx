@@ -6,6 +6,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/src/components/dashboard/Sidebar";
 import { DashboardHeader } from "@/src/components/dashboard/DashboardHeader";
+import { MobileNav } from "@/src/components/dashboard/MobileNav";
 
 export function PageShell({
   children,
@@ -16,6 +17,10 @@ export function PageShell({
   const { user, isLoading } = useAuth();
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   useEffect(() => {
     if (!isLoading && !user) router.replace("/login");
@@ -42,6 +47,8 @@ export function PageShell({
         name={studentName}
         collapsed={collapsed}
         onToggle={() => setCollapsed((c) => !c)}
+        isAdmin={user?.role === "admin"}
+        role={user?.role}
       />
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -52,12 +59,14 @@ export function PageShell({
           onToggleSidebar={() => setCollapsed((c) => !c)}
         />
 
-        <main className="flex-1 overflow-x-hidden px-4 py-8 sm:px-6 lg:px-10">
+        <main className="flex-1 overflow-x-hidden px-4 py-8 pb-24 sm:px-6 lg:px-10 lg:pb-8">
           <div className="w-full min-w-0">
             {children}
           </div>
         </main>
       </div>
+
+      <MobileNav />
     </div>
   );
 }
