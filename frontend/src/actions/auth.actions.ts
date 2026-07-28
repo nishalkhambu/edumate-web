@@ -6,6 +6,9 @@ import {
   loginApi,
   whoamiApi,
   updateProfileApi,
+  forgotPasswordApi,
+  resetPasswordApi,
+  refreshTokenApi,
 } from "@/src/api/auth.api";
 import {
   AuthActionResult,
@@ -156,6 +159,48 @@ export async function changePasswordAction(
       success: false,
       message:
         error instanceof Error ? error.message : "Password change failed",
+    };
+  }
+}
+
+export async function forgotPasswordAction(
+  email: string
+): Promise<AuthActionResult<null>> {
+  try {
+    await forgotPasswordApi({ email });
+    return { success: true, data: null };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to request password reset",
+    };
+  }
+}
+
+export async function resetPasswordAction(
+  token: string,
+  password: string
+): Promise<AuthActionResult<null>> {
+  try {
+    await resetPasswordApi(token, password);
+    return { success: true, data: null };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to reset password",
+    };
+  }
+}
+
+export async function refreshTokenAction(): Promise<AuthActionResult<{ token: string; refreshToken: string }>> {
+  try {
+    const data = await refreshTokenApi();
+    setSessionToken(data.token);
+    return { success: true, data: { token: data.token, refreshToken: data.refreshToken } };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to refresh token",
     };
   }
 }
