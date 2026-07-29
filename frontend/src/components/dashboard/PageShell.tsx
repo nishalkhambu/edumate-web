@@ -39,8 +39,8 @@ export function PageShell({
 
   return (
     <div
-      className={`dashboard-root grid min-h-screen grid-cols-1 lg:grid-cols-[260px_1fr] ${
-        collapsed ? "lg:grid-cols-[80px_1fr]" : "lg:grid-cols-[260px_1fr]"
+      className={`dashboard-root grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr] ${
+        collapsed ? "lg:grid-cols-[80px_1fr]" : "lg:grid-cols-[280px_1fr]"
       }`}
     >
       <Sidebar
@@ -83,8 +83,8 @@ export function SectionHeader({
   return (
     <div className="mb-5 flex items-end justify-between gap-4">
       <div>
-        {label && <p className="section-label mb-1.5">{label}</p>}
-        <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">
+        {label && <p className="section-label mb-2">{label}</p>}
+        <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
           {title}
         </h2>
       </div>

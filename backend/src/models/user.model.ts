@@ -35,6 +35,26 @@ const userSchema = new Schema<IUser>(
       default: "active",
       required: true,
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: {
+      type: String,
+      select: false,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      select: false,
+    },
+    refreshToken: {
+      type: String,
+      select: false,
+    },
+    avatar: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
