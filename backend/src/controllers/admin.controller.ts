@@ -8,6 +8,9 @@ import {
   CreateUserDTO,
   UpdateUserDTO,
   ApiErrorResponse,
+  UserRole,
+  UserStatus,
+  AuthUser,
 } from "../types/user.types";
 
 const BCRYPT_SALT_ROUNDS = 10;
@@ -21,19 +24,19 @@ const toUserResponse = (user: {
   status: string;
   createdAt: Date;
   updatedAt: Date;
-}) => ({
+}): AuthUser & { createdAt: string; updatedAt: string } => ({
   id: user._id.toString(),
   name: user.name,
   email: user.email,
-  role: user.role || "user",
-  status: user.status || "active",
-  createdAt: user.createdAt,
-  updatedAt: user.updatedAt,
+  role: (user.role as UserRole) || "user",
+  status: (user.status as UserStatus) || "active",
+  createdAt: user.createdAt.toISOString(),
+  updatedAt: user.updatedAt.toISOString(),
 });
 
 export const listUsers = async (
   req: Request,
-  res: Response<AdminUserListResponse | AdminForbiddenResponse>
+  res: Response<any>
 ): Promise<void> => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
@@ -85,7 +88,7 @@ export const listUsers = async (
 
 export const getUserById = async (
   req: Request,
-  res: Response<AdminUserResponse | AdminForbiddenResponse | ApiErrorResponse>
+  res: Response<any>
 ): Promise<void> => {
   try {
     const user = await User.findById(req.params.id).select("-password");
@@ -117,7 +120,7 @@ export const getUserById = async (
 
 export const createUser = async (
   req: Request,
-  res: Response<AdminUserResponse | ApiErrorResponse>
+  res: Response<any>
 ): Promise<void> => {
   try {
     const { name, email, password, role, status } = req.body as CreateUserDTO;
@@ -180,7 +183,7 @@ export const createUser = async (
 
 export const updateUser = async (
   req: Request,
-  res: Response<AdminUserResponse | ApiErrorResponse>
+  res: Response<any>
 ): Promise<void> => {
   try {
     const { name, email, role, status, password } = req.body as UpdateUserDTO;
@@ -263,7 +266,7 @@ export const updateUser = async (
 
 export const deleteUser = async (
   req: Request,
-  res: Response<ApiErrorResponse>
+  res: Response<any>
 ): Promise<void> => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
