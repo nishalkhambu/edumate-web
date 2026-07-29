@@ -44,30 +44,30 @@ export function Sidebar({
     <aside
       className={cn(
         "sidebar-collapsed z-40 hidden flex-col border-r border-slate-800/70 bg-[#0c1426]/95 backdrop-blur-xl lg:sticky lg:top-0 lg:flex lg:h-screen",
-        collapsed ? "w-[80px]" : "w-[260px]"
+        collapsed ? "w-[80px]" : "w-[280px]"
       )}
     >
-      <div className={cn("flex h-16 items-center border-b border-slate-800/70", collapsed ? "justify-center px-2" : "gap-2.5 px-6")}>
-        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl gradient-primary shadow-lg shadow-indigo-900/40">
-          <GraduationCap className="h-5 w-5 text-white" />
+      <div className={cn("flex h-16 items-center border-b border-slate-800/70", collapsed ? "justify-center px-2" : "gap-3 px-6")}>
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl gradient-primary shadow-lg shadow-indigo-900/40">
+          <GraduationCap className="h-6 w-6 text-white" />
         </div>
-        {!collapsed && <span className="text-lg font-bold tracking-tight text-slate-50">Edumate</span>}
+        {!collapsed && <span className="text-xl font-bold tracking-tight text-slate-50">Edumate</span>}
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 space-y-1.5 px-3 py-5">
         {nav.map((item) => {
           const active = isActive(item.href);
           const Icon = item.icon;
           return (
-            <Link
+          <Link
               key={item.name}
               href={item.href}
               title={collapsed ? item.name : undefined}
               className={cn(
-                "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "group relative flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium transition-all duration-200",
                 collapsed && "justify-center",
                 active
-                  ? "bg-indigo-500/15 text-indigo-200"
+                  ? "bg-indigo-500/20 text-indigo-200"
                   : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
               )}
             >
@@ -77,50 +77,50 @@ export function Sidebar({
               <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-indigo-300" : "text-slate-500 group-hover:text-slate-300")} />
               {!collapsed && <span className="truncate">{item.name}</span>}
             </Link>
-          );
-        })}
-        {isAdmin && (() => {
-          const active = isActive(adminNav.href);
-          const Icon = adminNav.icon;
-          return (
+           );
+         })}
+         {isAdmin && (() => {
+           const active = isActive(adminNav.href);
+           const Icon = adminNav.icon;
+           return (
             <Link
-              key={adminNav.name}
-              href={adminNav.href}
-              title={collapsed ? adminNav.name : undefined}
-              className={cn(
-                "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                collapsed && "justify-center",
-                active
-                  ? "bg-rose-500/15 text-rose-200"
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
-              )}
-            >
-              {active && (
-                <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-rose-400" />
-              )}
-              <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-rose-300" : "text-slate-500 group-hover:text-slate-300")} />
-              {!collapsed && <span className="truncate">{adminNav.name}</span>}
-            </Link>
+                key={adminNav.name}
+                href={adminNav.href}
+                title={collapsed ? adminNav.name : undefined}
+                className={cn(
+                  "group relative flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium transition-all duration-200",
+                  collapsed && "justify-center",
+                  active
+                    ? "bg-rose-500/20 text-rose-200"
+                    : "text-slate-400 hover:bg-white/5 hover:text-slate-100"
+                )}
+              >
+                {active && (
+                  <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-rose-400" />
+                )}
+                <Icon className={cn("h-5 w-5 flex-shrink-0", active ? "text-rose-300" : "text-slate-500 group-hover:text-slate-300")} />
+                {!collapsed && <span className="truncate">{adminNav.name}</span>}
+              </Link>
           );
         })()}
       </nav>
 
-      <div className="border-t border-slate-800/70 p-3">
+      <div className="border-t border-slate-800/70 p-4">
         {!collapsed && (
-          <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/5 p-3">
-            <div className="gradient-primary flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
+          <div className="mb-4 flex items-center gap-3.5 rounded-xl bg-white/5 p-4">
+            <div className="gradient-primary flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-base font-bold text-white">
               {name.slice(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-slate-100">{name}</p>
-              <p className="text-xs text-slate-400 capitalize">{role || "Student"}</p>
+              <p className="truncate text-base font-semibold text-slate-100">{name}</p>
+              <p className="text-sm text-slate-400 capitalize">{role || "Student"}</p>
             </div>
           </div>
         )}
-        <div className={cn("flex gap-2", collapsed && "flex-col items-center")}>
+        <div className={cn("flex gap-2.5", collapsed && "flex-col items-center")}>
           <button
             onClick={onToggle}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white/5 px-3 py-2 text-xs font-medium text-slate-300 transition-colors hover:bg-white/10"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white/5 px-3 py-3 text-base font-medium text-slate-300 transition-colors hover:bg-white/10"
           >
             <ChevronLeft className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
             {!collapsed && "Collapse"}
@@ -132,7 +132,7 @@ export function Sidebar({
             }}
             aria-label="Logout"
             className={cn(
-              "flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white/5 px-3 py-2 text-xs font-medium text-rose-300 transition-colors hover:bg-rose-500/10",
+              "flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white/5 px-3 py-3 text-base font-medium text-rose-300 transition-colors hover:bg-rose-500/10",
               collapsed ? "w-9 flex-shrink-0" : "px-3"
             )}
           >
