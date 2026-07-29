@@ -1,98 +1,79 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import {
-  clearSessionToken,
-  getSessionToken,
-} from "@/src/actions/auth.actions";
-import { useAuth } from "@/src/contexts/AuthContext";
-import Link from "next/link";
+import { PageShell, SectionHeader, FadeIn } from "@/src/components/dashboard/PageShell";
+import { WelcomeSection } from "@/src/components/dashboard/WelcomeSection";
+import { AgendaTimeline } from "@/src/components/dashboard/AgendaTimeline";
+import { FocusRings } from "@/src/components/dashboard/FocusRings";
+import { ProgressAnalytics } from "@/src/components/dashboard/ProgressAnalytics";
+import { ExamsGrid } from "@/src/components/dashboard/ExamsGrid";
+import { NotesGrid } from "@/src/components/dashboard/NotesGrid";
+import { SmartInsights } from "@/src/components/dashboard/SmartInsights";
+import { QuickActions } from "@/src/components/dashboard/QuickActions";
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const { user, isLoading } = useAuth();
-
-  useEffect(() => {
-    const token = getSessionToken();
-
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-
-    setIsAuthorized(true);
-  }, [router]);
-
-  const handleLogout = () => {
-    clearSessionToken();
-    router.push("/login");
-  };
-
-  if (!isAuthorized || (!user && !isLoading)) {
-    return (
-      <div className="dashboard-loading">
-        <p>Loading your dashboard...</p>
-      </div>
-    );
-  }
-
   return (
-    <main className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>EduMate Dashboard</h1>
-        <div className="header-actions">
-          <Link href="/dashboard" className="nav-link active">
-            Dashboard
-          </Link>
-          <Link href="/dashboard/profile" className="nav-link">
-            Profile
-          </Link>
-          <Link href="/dashboard/password" className="nav-link">
-            Password
-          </Link>
-          {user?.role === "admin" && (
-            <Link href="/dashboard/admin/users" className="nav-link">
-              Users
-            </Link>
-          )}
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="logout-btn"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
+    <PageShell>
+      <div className="space-y-12">
+        <FadeIn>
+          <WelcomeSection />
+        </FadeIn>
 
-      <section className="dashboard-content">
-        <div className="dashboard-card">
-          <h2>Welcome to EduMate</h2>
-          <p>
-            You are successfully authenticated. This dashboard is a placeholder
-            for upcoming study planning features.
-          </p>
-        </div>
+        <section>
+          <SectionHeader label="Today" title="Your Agenda" />
+          <FadeIn delay={0.05}>
+            <div className="rounded-3xl border border-slate-800/70 bg-white/[0.02] p-6">
+              <AgendaTimeline />
+            </div>
+          </FadeIn>
+        </section>
 
-        <div className="dashboard-grid">
-          <div className="dashboard-card">
-            <h3>Study Planner</h3>
-            <p>Organize your courses and daily study sessions.</p>
-          </div>
+        <section>
+          <SectionHeader label="Performance" title="Focus & Productivity" />
+          <FadeIn delay={0.05}>
+            <FocusRings />
+          </FadeIn>
+        </section>
 
-          <div className="dashboard-card">
-            <h3>Task Tracker</h3>
-            <p>Keep assignments and deadlines in one place.</p>
-          </div>
+        <section>
+          <SectionHeader label="Analytics" title="Progress Overview" />
+          <FadeIn delay={0.05}>
+            <div className="rounded-3xl border border-slate-800/70 bg-white/[0.02] p-6">
+              <ProgressAnalytics />
+            </div>
+          </FadeIn>
+        </section>
 
-          <div className="dashboard-card">
-            <h3>Progress Insights</h3>
-            <p>Monitor your learning goals and achievements.</p>
-          </div>
-        </div>
-      </section>
-    </main>
+        <section>
+          <SectionHeader label="Preparation" title="Upcoming Exams" />
+          <FadeIn delay={0.05}>
+            <ExamsGrid />
+          </FadeIn>
+        </section>
+
+        <section>
+          <SectionHeader
+            label="Workspace"
+            title="Recent Notes"
+            action={
+               <button className="rounded-xl border border-slate-700 bg-white/5 px-3 py-2 text-base font-semibold text-slate-200 transition-colors hover:border-indigo-500/50 hover:text-indigo-200">
+                 View all
+               </button>
+            }
+          />
+          <FadeIn delay={0.05}>
+            <NotesGrid />
+          </FadeIn>
+        </section>
+
+        <section>
+          <SectionHeader label="AI" title="Smart Insights" />
+          <FadeIn delay={0.05}>
+            <SmartInsights />
+          </FadeIn>
+        </section>
+      </div>
+
+      <QuickActions />
+    </PageShell>
   );
 }
