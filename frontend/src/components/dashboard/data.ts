@@ -59,10 +59,10 @@ export const insights = [
 // Agenda: mixed classes, tasks and exams for the timeline
 export const agenda = [
   { id: 1, time: "08:00", type: "task", title: "Revise React Hooks", meta: "Personal goal", accent: "#8b5cf6" },
-  { id: 2, time: "09:00", type: "class", title: "Data Structures", meta: "Graph Traversal (BFS/DFS) · Prof. Anderson", accent: "#6366f1" },
-  { id: 3, time: "11:00", type: "class", title: "Linear Algebra", meta: "Eigenvalues & Eigenvectors · Dr. Martinez", accent: "#10b981" },
+  { id: 2, time: "09:00", type: "class", title: "Data Structures", meta: "Graph Traversal (BFS/DFS) · Shyam. Karki", accent: "#6366f1" },
+  { id: 3, time: "11:00", type: "class", title: "Linear Algebra", meta: "Eigenvalues & Eigenvectors · Ramesh. Gautam", accent: "#10b981" },
   { id: 4, time: "13:00", type: "task", title: "Submit DBMS Project Report", meta: "Due tomorrow · High priority", accent: "#f59e0b" },
-  { id: 5, time: "14:00", type: "class", title: "Computer Networks", meta: "TCP Congestion Control · Prof. Kim", accent: "#ef4444" },
+  { id: 5, time: "14:00", type: "class", title: "Computer Networks", meta: "TCP Congestion Control ·Mahes", accent: "#ef4444" },
   { id: 6, time: "16:30", type: "exam", title: "OS Mock Test", meta: "Revision session · Lab 3", accent: "#f59e0b" },
   { id: 7, time: "18:00", type: "focus", title: "Deep Work Block", meta: "Silent study · 90 min", accent: "#6366f1" },
 ];
